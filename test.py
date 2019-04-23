@@ -30,6 +30,6 @@ def praštevila_do_n(n):
     return None 
 
 
-naredmo problem bc y not
 
 
+hej, to neki ne dela, jst bi rad konflikt
