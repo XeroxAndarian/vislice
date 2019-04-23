@@ -1,2 +1,3 @@
-# vislice
-Učni projekt FMF
+Znani matematiki
+Vega
+in drugi
