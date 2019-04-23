@@ -19,4 +19,6 @@ def izpis_vseh_praštevil_do_200():
 izpis_vseh_praštevil_do_200()
 
 
+naredmo problem bc y not
+
 
