@@ -30,4 +30,6 @@ def praštevila_do_n(n):
     return None 
 
 
+naredmo problem bc y not
+
 
