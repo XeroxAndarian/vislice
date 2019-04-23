@@ -1,22 +1,33 @@
 import math
 
-def izpis_vseh_praštevil_do_200():
-    seznam = []
-    for i in range(200):
-        if i == 1 or i == 0:
-            pass
-        else:
-            for j in range(i):
-                if math.gcd(i,j) == j:
-                    for a in range(100):
-                        if a * j != i:
-                            seznam.append(i)
-            else: 
-                pass
-    return seznam
+def isprime(n):
+    '''check if integer n is a prime'''
 
+    # make sure n is a positive integer
+    n = abs(int(n))
 
-izpis_vseh_praštevil_do_200()
+    # 0 and 1 are not primes
+    if n < 2:
+        return False
+
+    # 2 is the only even prime number
+    if n == 2: 
+        return True    
+
+    # all other even numbers are not primes
+    if not n & 1: 
+        return False
+
+    # range starts with 3 and only needs to go up 
+    # the square root of n for all odd numbers
+    for x in range(3, int(n**0.5) + 1, 2):
+        if n % x == 0:
+            return False
+
+    return True
+
+def praštevila_do_n(n):
+    return None 
 
 
 
