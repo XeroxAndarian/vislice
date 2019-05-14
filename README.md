@@ -1,3 +1,2 @@
-Znani matematiki
-Vega
-in drugi
+# Vislice
+Repozitorij za skupni prijekt pri **UVP**.
