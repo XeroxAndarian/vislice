@@ -5,10 +5,11 @@ STEVILO_DOVOLJENIH_NAPAK = 10
 
 
 PRAVILNA_CRKA = '+'
-PONOVLJENA_CRKA = '-'
-NAPACNA_CRKA = 'o'
+PONOVLJENA_CRKA = 'o'
+NAPACNA_CRKA = '-'
 ZMAGA = 'w'
 PORAZ = 'L'
+ZAČETEK = 'B'
 
 
 # if crka == '+':
@@ -59,7 +60,7 @@ class Igra:
         for i in self.geslo:
             if i not in self.crke:
                 return False
-        return self.stevilo_napak() < STEVILO_DOVOLJENIH_NAPAK
+        return True
         
   
         
@@ -109,3 +110,37 @@ def nova_igra():
     geslo = random.choice(bazen_besed)
     return Igra(geslo, [])
 
+class Vislice:
+
+    def __init__(self):
+        # v slovarju igre ima vsaka igra svoj ID, ki je celo št.
+        self.igre = {} 
+        return 
+
+    def prost_id_igre(self):
+        if self.igre == {}:
+            return 0
+        else:
+            #preverjamo za keteo od prvih 'n+1' števil še ni uporabljno za ID 'n' iger
+            for i in range(len(self.igre) + 1):
+                if i not in self.igre.keys():
+                    return i
+
+    def nova_igra(self):
+        # naredi novo igro z naključnim geslom
+        igra = nova_igra()
+        nov_id = self.prost_id_igre()
+
+        # shrani v slovar z novim ID
+        self.igre[nov_id] = (igra, ZAČETEK)     
+        return nov_id
+
+    def ugibaj(self, id_igre, crka):
+        # Pridobi igro
+        (igra, _ ) = self.igre[id_igre]
+        #Ugibaj
+        nov_poskus = igra.ugibaj(crka)
+        #Shrani rezultat poskusa v slovar
+        self.igre[id_igre] = (igra, nov_poskus)
+        return
+    
