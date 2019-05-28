@@ -1,7 +1,7 @@
 import bottle
 import model
-
-vislice = model.Vislice()
+SKRIVNI_KLJUC = 'Geslo'
+vislice = model.Vislice('stanje.json')
 
 
 # # TA ira je namenjen atestiranju:
@@ -22,6 +22,7 @@ def prva_stran():
 # def prikaz_testne_igre1():
 #     return bottle.template('igra.tpl', igra=testna_igra)
 # 
+
 # @bottle.get('/igra/')
 # def prikaz_testne_igre():
 #     return bottle.template('igra.tpl', igra=testna_igra)
@@ -30,27 +31,42 @@ def prva_stran():
 # def nova_igra(id_igre):
 #     return bottle.template('igra.tpl', id_igre=id_igre)
 
-@bottle.post('/igra/')
+@bottle.post('/nova_igra/')
 def nova_igra():
     #naredi novo igro
     id_igre = vislice.nova_igra()
+    bottle.response.set_cookie('id_igre', id_igre, secret=SKRIVNI_KLJUC, path='/')
     # Preusmeri na nalsov za iranje nove igre
     (nova_igra, poskus) = vislice.igre[id_igre]
-    bottle.redirect('/igra/{}/'.format(id_igre))
-    return bottle.template('igra.tpl', igra=nova_igra)
+    bottle.redirect('/igra/')
+    return
 
 
 
-@bottle.get('/igra/<id_igre:int>/')
-def prikazi_igro(id_igre):
+@bottle.get('/igra/')
+def prikazi_igro():
+    id_igre = bottle.request.get_cookie('id_igre',  secret=SKRIVNI_KLJUC)
     (igra, poskus ) = vislice.igre[id_igre]
     return bottle.template('igra.tpl', igra=igra, id_igre=id_igre, poskus=poskus)
 
-@bottle.post('/igra/<id_igre:int>/')
-def ugibaj_crko(id_igre):
+@bottle.post('/igra/')
+def ugibaj_crko():
     crka = bottle.request.forms.getunicode('poskus')
+    id_igre = bottle.request.get_cookie('id_igre',  secret=SKRIVNI_KLJUC)
+
     vislice.ugibaj(id_igre, crka)
-    bottle.redirect('/igra/{}/'.format(id_igre))
+    bottle.redirect('/igra/')
+
+@bottle.post('/odpri_igra/')
+def povrni_igro(): 
+    zeljeni_id = int(bottle.request.forms.getunicode('id_igre'))
+    bottle.response.set_cookie('id_igre', zeljeni_id, secret=SKRIVNI_KLJUC, path='/')
+    vislice.nalozi_igre_iz_datoteke()
+    bottle.redirect('/igra/')
+    return
+    
+
+
 
 
 bottle.run(debug=True, reloader=True)
